@@ -16,6 +16,8 @@ class HttpClient
        virtual  int Post(JsonCoversion* pJsonBack);
 	   virtual  int Get(JsonCoversion* pJsonBack = nullptr);
 	   string out;
+	public:
+	   virtual void AddHeader(string strHeaderInfo);
     protected:
 		string jsonTrans;
 		JsonCoversion *pDataTrans;

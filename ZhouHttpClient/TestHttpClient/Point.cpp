@@ -17,3 +17,21 @@ void MyPoint::toObjectFromValue(Json::Value root)
      y = root["y"].asInt();
  
 }
+
+Json::Value RespTest::toJsonValue()
+{
+    root["status"] = status;//x坐标
+    root["message"] = message;//y坐标
+    root["data"] = data.toJsonValue();
+    return  root;
+}
+
+void RespTest::toObjectFromValue(Json::Value root)
+{
+    data.toObjectFromValue(root["data"]);
+    status = root["status"].asInt();
+    message = root["message"].asString();
+
+
+
+}

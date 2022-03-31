@@ -8,6 +8,7 @@ using namespace std;
 
 class MyPoint :public JsonCoversion
 {
+    friend class RespTest;
     protected:
 		virtual void LoadMapData();
 		virtual Json::Value  toJsonValue() ;
@@ -15,6 +16,17 @@ class MyPoint :public JsonCoversion
     public:
         int x;//x坐标
         int y;//y坐标
+};
+
+class RespTest :public JsonCoversion
+{
+protected:
+    virtual Json::Value  toJsonValue();
+    virtual void toObjectFromValue(Json::Value root);
+public:
+    MyPoint data;
+    int  status;
+    string message;
 };
 
 #endif // POINT_H

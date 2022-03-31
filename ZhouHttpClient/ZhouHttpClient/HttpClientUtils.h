@@ -39,6 +39,5 @@ public:
 	//only uplodad used and normal(HttpClient) json data use
 	vector<FilesVec*> vecFiles;
 	BOOL bLocalFile;
-
 };
 #endif // HttpClientUtils_H

@@ -170,11 +170,13 @@ void CTestHttpClientDlg::OnBnClickedButtonTestnormal()
 	pt->y = 5;
 	USES_CONVERSION;
 	HttpClientUtils *httpclientUtil = new HttpClientUtils(JSON_HTTP);
-	httpclientUtil->url = "http://127.0.0.1:8703/GetPoint";
+	httpclientUtil->url = "http://192.168.31.84:8088/authenticate/test";
 	httpclientUtil->pTransData = pt;
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
-	pHttp->Post(pt);
-	CString strResult = A2W(pt->toJson().c_str());
+	RespTest *rt = new RespTest();
+	pHttp->AddHeader("Authorization: Bearer 53826abc-faf2-496d-94fe-1d8863ff93f6");
+	pHttp->Post(rt);
+	CString strResult = A2W(rt->toJson().c_str());
 	MessageBox(strResult);
 	// TODO: 在此添加控件通知处理程序代码
 }
@@ -191,6 +193,7 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocal()
 	httpclientUtil->url = "http://127.0.0.1:8703/GetPointLocal";
 	httpclientUtil->pTransData = pt;
 	httpclientUtil->bLocalFile = true;
+	//如果要上传文件的化要执行如下代码 ----------start
 	vector<FilesVec*> vecFiles;
 	FilesVec* localFile1 = new FilesVec();
 	localFile1->fileName = "D:/work/0000-67098-0Z80F7.pdf";
@@ -201,6 +204,7 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocal()
 	localFile2->key = "gg";
 	vecFiles.push_back(localFile2);
 	httpclientUtil->vecFiles = vecFiles;
+	//如果要上传文件的化要执行如上代码----------- end
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	pHttp->Post(pt);
 	CString strResult = A2W(pt->toJson().c_str());
@@ -251,11 +255,11 @@ void CTestHttpClientDlg::OnBnClickedButtonDownloadfile()
 	pt->y = 5;
 	USES_CONVERSION;
 	HttpClientUtils *httpclientUtil = new HttpClientUtils(DOWNLOAD_HTTP);
-	httpclientUtil->url = "http://127.0.0.1:8703/DowloadPoint";
-	httpclientUtil->savePath = "D:/httpsave.svg";
+	httpclientUtil->url = "http://192.168.31.10:8888/group1/M00/00/99/wKgfCmJEKcmAT_JWABbkjk139kc725.jpg";
+	httpclientUtil->savePath = "D:/httpsave.jpg";
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	pHttp->Get(nullptr);
-	if (PathFileExists(L"D:/httpsave.svg"))
+	if (PathFileExists(L"D:/httpsave.jpg"))
 	{
 		MessageBox(L"file dowload success!");
 	}

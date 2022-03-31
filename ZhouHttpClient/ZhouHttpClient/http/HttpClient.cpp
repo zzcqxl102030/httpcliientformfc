@@ -88,10 +88,12 @@ size_t HttpClient::WriteToStrResponse(void* data, size_t size, size_t nmemb, voi
 	outTmp.append((char*)data, size * nmemb);
 	return size * nmemb; 
 }
+void HttpClient::AddHeader(string strHeaderInfo) {
+	headerlist = curl_slist_append(headerlist,strHeaderInfo.c_str());
+}
 void HttpClient::InitTransData() {
 	// 设置http发送的内容类型为JSON
-	headerlist = curl_slist_append(headerlist,
-		"Content-Type:application/json;charset=UTF-8");
+	AddHeader("Content-Type:application/json;charset=UTF-8");
 	curl_easy_setopt((CURL*)curl, CURLOPT_HTTPHEADER, headerlist);
 	// 设置要POST的JSON数据
 #ifdef _WIN32
