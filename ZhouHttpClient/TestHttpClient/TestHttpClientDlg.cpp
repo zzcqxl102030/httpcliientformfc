@@ -174,7 +174,7 @@ void CTestHttpClientDlg::OnBnClickedButtonTestnormal()
 	httpclientUtil->pTransData = pt;
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	RespTest *rt = new RespTest();
-	pHttp->AddHeader("Authorization: Bearer 53826abc-faf2-496d-94fe-1d8863ff93f6");
+	pHttp->AddHeader("Authorization: Bearer dbd2b0dc-b55e-4fac-b96c-a5222f707bef");
 	pHttp->Post(rt);
 	CString strResult = A2W(rt->toJson().c_str());
 	MessageBox(strResult);

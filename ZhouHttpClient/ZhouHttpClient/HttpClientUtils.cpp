@@ -1,7 +1,3 @@
-#if defined(_WIN32)
-	#include "pch.h"
-#endif
-
 #include "HttpClientUtils.h"
 #include "data/JsonCoversion.h"
 #include "http/DownloadFile.h"
