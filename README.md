@@ -15,7 +15,7 @@ if ubuntu  just use it   with   openssl  installed<br>
 
 incase  linux ：<br>
 
-   1.  u have  mkdir one directory  named  build  as the same level as main.cpp  
+   1.  u have to mkdir one directory  named  build  as the same level as main.cpp  
    2.  cd  build
    3.  then excute "cmake .." cmd
    4.  then   excute "make" cmd
