@@ -1,9 +1,13 @@
-#include "pch.h"
+#if defined(_WIN32)
+	#include "pch.h"
+#endif
+
 #include "HttpClientUtils.h"
 #include "data/JsonCoversion.h"
 #include "http/DownloadFile.h"
 #include "http/HttpClient.h"
 #include "http/UploadFiles.h"
+
 HttpClientUtils::HttpClientUtils(UtilsType type) {
 	httpType = type;
 	pTransData = nullptr;

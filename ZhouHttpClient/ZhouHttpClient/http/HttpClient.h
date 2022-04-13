@@ -32,8 +32,6 @@ class HttpClient
 		struct curl_httppost *formpost;
 		struct curl_httppost *lastptr;
     protected:
-		virtual int ProgressCallback(char *progress_data, double t, double d, double ultotal,
-			double ulnow);
 		void InitCallBackData();
 		void GetResponse(JsonCoversion* pJsonBack);
 		static size_t WriteToStrResponse(void* data, size_t size, size_t nmemb, void* content);

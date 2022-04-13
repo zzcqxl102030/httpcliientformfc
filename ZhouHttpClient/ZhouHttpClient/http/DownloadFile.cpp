@@ -1,5 +1,11 @@
 #include "DownloadFile.h"
+#ifdef __unix
 #include "curl/curl.h"
+
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#else
+#include "curl-mfc/curl.h"
+#endif
 
 DownloadFile::DownloadFile(string url ,string savePath)
 :HttpClient(url,nullptr)

@@ -1,7 +1,14 @@
 #include "HttpClient.h"
 #include "../data/JsonCoversion.h"
 #include <codecvt>
+#ifdef __unix
 #include "curl/curl.h"
+
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#else
+#include "curl-mfc/curl.h"
+#endif
+#include "FuncTool.h"
 HttpClient::HttpEnv::HttpEnv() {
 	curl_global_init(CURL_GLOBAL_ALL);
 }
@@ -106,26 +113,29 @@ void HttpClient::InitTransData() {
 
 }
 int HttpClient::Get(JsonCoversion* pJsonBack) {
-	return 	 Send(pJsonBack, FALSE);
+	return 	 Send(pJsonBack, false);
 }
 string HttpClient::AsciiToUtf8(const string &str) {
-	int nwLen = ::MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
-	wchar_t * pwBuf = new wchar_t[nwLen + 1];//一定要加1，不然会出现尾巴 
-	ZeroMemory(pwBuf, nwLen * 2 + 2);
-	::MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), pwBuf, nwLen);
-	int nLen = ::WideCharToMultiByte(CP_UTF8, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
-	char * pBuf = new char[nLen + 1];
-	ZeroMemory(pBuf, nLen + 1);
-	::WideCharToMultiByte(CP_UTF8, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
-	std::string retStr(pBuf);
-	delete[]pwBuf;
-	delete[]pBuf;
-	pwBuf = NULL;
-	pBuf = NULL;
-	return retStr;
-}
-int HttpClient::ProgressCallback(char *progress_data, double t, double d, double ultotal,
-	double ulnow) {
-	printf("%s %g / %g (%g %%)\n", progress_data, d, t, d*100.0 / t);
-	return TRUE;
+	std::string result("");
+	#if defined(__linux__)
+	// Linux系统
+	 result = FuncTool::UnicodeToUTF8(FuncTool::ANSIToUnicode(str));
+	#elif defined(_WIN32)
+		// Windows系统
+		int nwLen = ::MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
+		wchar_t * pwBuf = new wchar_t[nwLen + 1];//一定要加1，不然会出现尾巴 
+		ZeroMemory(pwBuf, nwLen * 2 + 2);
+		::MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.length(), pwBuf, nwLen);
+		int nLen = ::WideCharToMultiByte(CP_UTF8, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
+		char * pBuf = new char[nLen + 1];
+		ZeroMemory(pBuf, nLen + 1);
+		::WideCharToMultiByte(CP_UTF8, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+		std::string retStr(pBuf);
+		result = retStr;
+		delete[]pwBuf;
+		delete[]pBuf;
+		pwBuf = NULL;
+		pBuf = NULL;
+	#endif	
+	return result;
 }

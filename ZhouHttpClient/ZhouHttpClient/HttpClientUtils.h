@@ -1,11 +1,15 @@
 #ifndef HttpClientUtils_H
 #define HttpClientUtils_H
 #pragma once
-#ifdef HTTP_CLIENT_UTILS_EXPORT
-#define HttpClientUtilsApi __declspec(dllexport)
+#ifdef __unix	
+	#define  HttpClientUtilsApi
 #else
-#define HttpClientUtilsApi __declspec(dllimport)
-#endif // ExportImageView
+	#ifdef HTTP_CLIENT_UTILS_EXPORT
+	#define HttpClientUtilsApi __declspec(dllexport)
+	#else
+	#define HttpClientUtilsApi __declspec(dllimport)
+	#endif // ExportImageView
+#endif
 #include <iostream>
 #include <string.h>
 #include <vector>
@@ -38,6 +42,6 @@ public:
 	JsonCoversion* pTransData;
 	//only uplodad used and normal(HttpClient) json data use
 	vector<FilesVec*> vecFiles;
-	BOOL bLocalFile;
+	bool bLocalFile;
 };
 #endif // HttpClientUtils_H

@@ -1,7 +1,12 @@
 
 #include "UploadFiles.h"
 #include "../data/JsonCoversion.h"
+#ifdef __unix
 #include "curl/curl.h"
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#else
+#include "curl-mfc/curl.h"
+#endif
 
 UploadFiles::UploadFiles(string url, JsonCoversion* pData,vector<FilesVec*> vecFiles,bool bLocalFile,int timeDuring)
 :HttpClient(url, pData, timeDuring)
