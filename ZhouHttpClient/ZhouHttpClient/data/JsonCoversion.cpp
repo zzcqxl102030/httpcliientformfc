@@ -42,3 +42,38 @@ void JsonCoversion::toObject(string & strBuf)
 	}
 	toObjectFromValue(root);
 }
+
+bool JsonCoversion::WriteDataToFile(string filePath) {
+ bool bResult = true;
+ try
+ {
+  toJsonValue();
+  std::string jsonStr;
+  std::ostringstream os;
+  std::unique_ptr<Json::StreamWriter> jsonWriter(writerBuilder.newStreamWriter());
+  jsonWriter->write(root, &os);
+  jsonStr = os.str();
+
+  ofstream outfile(filePath);
+  outfile << jsonStr;
+  outfile.close();
+ }
+ catch (const std::exception&)
+ {
+  bResult = false;
+ }
+ return bResult;
+
+}
+bool JsonCoversion::loadDataFromFile(string filePath) {
+ std::ifstream is;
+ is.open(filePath, std::ios::binary);
+ readerBuilder["collectComments"] = true;
+ JSONCPP_STRING errs;
+ if (!parseFromStream(readerBuilder, is, &root, &errs)) {
+  std::cout << errs << std::endl;
+  return false;
+ }
+ toObjectFromValue(root);
+ return true;
+}

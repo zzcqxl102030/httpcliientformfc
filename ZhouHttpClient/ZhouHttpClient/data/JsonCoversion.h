@@ -28,6 +28,8 @@ class JsonCoversion
         string toJson(Json::Value &root);
 		void toObject(string & strBuf);
 		/*virtual map<string,*/
+		bool WriteDataToFile(string filePath) ;
+        bool loadDataFromFile(string filePath) ;
     protected:
 		virtual void LoadMapData() {}
         virtual Json::Value  toJsonValue() = 0;
