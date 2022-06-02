@@ -25,7 +25,7 @@ class HttpClient;
 class HttpClientUtilsApi  HttpClientUtils
 {
 public:
-	HttpClientUtils(UtilsType type);
+	HttpClientUtils(UtilsType type,string url, JsonCoversion* transData = nullptr,bool bLocal = true, vector<FilesVec*> vecFile = vector<FilesVec*>());
 	~HttpClientUtils();
 public:
 	HttpClient * GetHttpUtils();

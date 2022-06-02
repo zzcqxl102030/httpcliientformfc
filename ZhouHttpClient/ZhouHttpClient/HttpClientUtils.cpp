@@ -4,9 +4,12 @@
 #include "http/HttpClient.h"
 #include "http/UploadFiles.h"
 
-HttpClientUtils::HttpClientUtils(UtilsType type) {
+HttpClientUtils::HttpClientUtils(UtilsType type, string url, JsonCoversion* transData, bool bLocal, vector<FilesVec*> vecFile)
+{
 	httpType = type;
-	pTransData = nullptr;
+	this->pTransData = transData;
+	this->vecFiles = vecFile;
+	this->bLocalFile = bLocal;
 	timeDuring = 10;
 }
 HttpClientUtils::~HttpClientUtils() {

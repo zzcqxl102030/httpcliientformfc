@@ -169,12 +169,10 @@ void CTestHttpClientDlg::OnBnClickedButtonTestnormal()
 	pt->x = 2;
 	pt->y = 5;
 	USES_CONVERSION;
-	HttpClientUtils *httpclientUtil = new HttpClientUtils(JSON_HTTP);
-	httpclientUtil->url = "http://192.168.31.84:8088/authenticate/test";
-	httpclientUtil->pTransData = pt;
+	HttpClientUtils *httpclientUtil = new HttpClientUtils(JSON_HTTP, "http://192.168.31.84:8088/authenticate/test",pt);
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	RespTest *rt = new RespTest();
-	pHttp->AddHeader("Authorization: Bearer dbd2b0dc-b55e-4fac-b96c-a5222f707bef");
+	pHttp->AddHeader("Authorization: Bearer 142a6b46-cd81-4c08-bda1-050d57fc7ffc");
 	pHttp->Post(rt);
 	CString strResult = A2W(rt->toJson().c_str());
 	MessageBox(strResult);
@@ -189,10 +187,6 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocal()
 	pt->x = 2;
 	pt->y = 5;
 	USES_CONVERSION;
-	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP);
-	httpclientUtil->url = "http://127.0.0.1:8703/GetPointLocal";
-	httpclientUtil->pTransData = pt;
-	httpclientUtil->bLocalFile = true;
 	//如果要上传文件的化要执行如下代码 ----------start
 	vector<FilesVec*> vecFiles;
 	FilesVec* localFile1 = new FilesVec();
@@ -203,8 +197,9 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocal()
 	localFile2->fileName = "D:/work/3D/qibaishi.png";
 	localFile2->key = "gg";
 	vecFiles.push_back(localFile2);
-	httpclientUtil->vecFiles = vecFiles;
 	//如果要上传文件的化要执行如上代码----------- end
+	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP,
+		"http://127.0.0.1:8703/GetPointLocal",pt,true, vecFiles);	
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	pHttp->Post(pt);
 	CString strResult = A2W(pt->toJson().c_str());
@@ -218,10 +213,6 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocalOnekey()
 	pt->x = 2;
 	pt->y = 5;
 	USES_CONVERSION;
-	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP);
-	httpclientUtil->url = "http://127.0.0.1:8703/GetPointOnekey";
-	httpclientUtil->pTransData = pt;
-	httpclientUtil->bLocalFile = true;
 	vector<FilesVec*> vecFiles;
 	FilesVec* localFile1 = new FilesVec();
 	localFile1->fileName = "D:/work/0000-67098-0Z80F7.pdf";
@@ -229,7 +220,12 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocalOnekey()
 	FilesVec* localFile2 = new FilesVec();
 	localFile2->fileName = "D:/work/3D/qibaishi.png";
 	vecFiles.push_back(localFile2);
-	httpclientUtil->vecFiles = vecFiles;
+	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP, 
+		"http://127.0.0.1:8703/GetPointOnekey",pt,true,vecFiles);
+	httpclientUtil->url = "http://127.0.0.1:8703/GetPointOnekey";
+	httpclientUtil->pTransData = pt;
+	httpclientUtil->bLocalFile = true;
+	
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	pHttp->Post(pt);
 	CString strResult = A2W(pt->toJson().c_str());
@@ -254,8 +250,8 @@ void CTestHttpClientDlg::OnBnClickedButtonDownloadfile()
 	pt->x = 2;
 	pt->y = 5;
 	USES_CONVERSION;
-	HttpClientUtils *httpclientUtil = new HttpClientUtils(DOWNLOAD_HTTP);
-	httpclientUtil->url = "http://192.168.31.10:8888/group1/M00/00/99/wKgfCmJEKcmAT_JWABbkjk139kc725.jpg";
+	HttpClientUtils *httpclientUtil = new HttpClientUtils(DOWNLOAD_HTTP,
+		"http://192.168.31.10:8888/group1/M00/00/99/wKgfCmJEKcmAT_JWABbkjk139kc725.jpg");
 	httpclientUtil->savePath = "D:/httpsave.jpg";
 	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
 	pHttp->Get(nullptr);
