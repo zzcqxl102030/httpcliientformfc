@@ -10,31 +10,61 @@ HttpClientUtils::HttpClientUtils(UtilsType type, string url, JsonCoversion* tran
 	this->pTransData = transData;
 	this->vecFiles = vecFile;
 	this->bLocalFile = bLocal;
+	this->url = url;
 	timeDuring = 10;
+	pHttpClient = nullptr;
 }
 HttpClientUtils::~HttpClientUtils() {
 
 }
-HttpClient * HttpClientUtils::GetHttpUtils() {
+void HttpClientUtils::Init() {
+	if (nullptr == pHttpClient)
+	{
+		switch (httpType)
+		{
+		case UPLOADFILE_HTTP:
+		{
+			pHttpClient = new  UploadFiles(url, pTransData, vecFiles,
+				bLocalFile, timeDuring);
+		}
+		break;
+		case DOWNLOAD_HTTP:
+		{
+			pHttpClient = new  DownloadFile(url, savePath);
+		}
+		break;
+		case JSON_HTTP:
+		default:
+		{
+			pHttpClient = new  HttpClient(url, pTransData, timeDuring);
+		}
+		break;
+		}
+	}
+}
+void HttpClientUtils::DoHttp(JsonCoversion* pJsonBack) {
+	Init();
 	switch (httpType)
 	{
-	case UPLOADFILE_HTTP:
+		case UPLOADFILE_HTTP:
+		case JSON_HTTP:
+		{
+			pHttpClient->Post(pJsonBack);
+			break;
+		}
+		case DOWNLOAD_HTTP:
+		default:
+		{
+			pHttpClient->Get(pJsonBack);
+			break;
+		}
+	}
+}
+void HttpClientUtils::AddHeader(string  headerData)
+{
+	Init();
+	if (nullptr != pHttpClient)
 	{
-		pHttpClient = new  UploadFiles(url, pTransData, vecFiles,
-			bLocalFile, timeDuring);
+		pHttpClient->AddHeader(headerData);
 	}
-		break;
-	case DOWNLOAD_HTTP:
-	{
-		pHttpClient = new  DownloadFile(url, savePath);
-	}
-		break;
-	case JSON_HTTP:
-	default:
-	{
-		pHttpClient = new  HttpClient(url, pTransData, timeDuring);
-	}
-		break;
-	}
-	return pHttpClient;
 }

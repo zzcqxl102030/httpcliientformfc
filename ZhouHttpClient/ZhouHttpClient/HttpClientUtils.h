@@ -28,7 +28,10 @@ public:
 	HttpClientUtils(UtilsType type,string url, JsonCoversion* transData = nullptr,bool bLocal = true, vector<FilesVec*> vecFile = vector<FilesVec*>());
 	~HttpClientUtils();
 public:
-	HttpClient * GetHttpUtils();
+	HttpClient* GetHttpUtils() { return pHttpClient; };
+	void Init();
+	void DoHttp(JsonCoversion* pJsonBack);
+	void AddHeader(string  headerData);
 private:
 	HttpClient * pHttpClient;
 	UtilsType httpType;

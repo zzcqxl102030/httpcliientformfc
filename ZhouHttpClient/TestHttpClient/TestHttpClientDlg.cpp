@@ -169,11 +169,11 @@ void CTestHttpClientDlg::OnBnClickedButtonTestnormal()
 	pt->x = 2;
 	pt->y = 5;
 	USES_CONVERSION;
-	HttpClientUtils *httpclientUtil = new HttpClientUtils(JSON_HTTP, "http://192.168.31.84:8088/authenticate/test",pt);
-	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
+	HttpClientUtils *httpclientUtil = new HttpClientUtils(JSON_HTTP,
+		"http://192.168.31.84:8088/authenticate/test",pt);
 	RespTest *rt = new RespTest();
-	pHttp->AddHeader("Authorization: Bearer 142a6b46-cd81-4c08-bda1-050d57fc7ffc");
-	pHttp->Post(rt);
+	httpclientUtil->AddHeader("Authorization: Bearer 142a6b46-cd81-4c08-bda1-050d57fc7ffc");
+	httpclientUtil->DoHttp(rt);
 	CString strResult = A2W(rt->toJson().c_str());
 	MessageBox(strResult);
 	// TODO: 在此添加控件通知处理程序代码
@@ -200,8 +200,7 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocal()
 	//如果要上传文件的化要执行如上代码----------- end
 	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP,
 		"http://127.0.0.1:8703/GetPointLocal",pt,true, vecFiles);	
-	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
-	pHttp->Post(pt);
+	httpclientUtil->DoHttp(pt);
 	CString strResult = A2W(pt->toJson().c_str());
 	MessageBox(strResult);
 }
@@ -222,12 +221,7 @@ void CTestHttpClientDlg::OnBnClickedButtonUploadlocalOnekey()
 	vecFiles.push_back(localFile2);
 	HttpClientUtils *httpclientUtil = new HttpClientUtils(UPLOADFILE_HTTP, 
 		"http://127.0.0.1:8703/GetPointOnekey",pt,true,vecFiles);
-	httpclientUtil->url = "http://127.0.0.1:8703/GetPointOnekey";
-	httpclientUtil->pTransData = pt;
-	httpclientUtil->bLocalFile = true;
-	
-	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
-	pHttp->Post(pt);
+	httpclientUtil->DoHttp(pt);
 	CString strResult = A2W(pt->toJson().c_str());
 	MessageBox(strResult);
 }
@@ -253,8 +247,7 @@ void CTestHttpClientDlg::OnBnClickedButtonDownloadfile()
 	HttpClientUtils *httpclientUtil = new HttpClientUtils(DOWNLOAD_HTTP,
 		"http://192.168.31.10:8888/group1/M00/00/99/wKgfCmJEKcmAT_JWABbkjk139kc725.jpg");
 	httpclientUtil->savePath = "D:/httpsave.jpg";
-	HttpClient* pHttp = httpclientUtil->GetHttpUtils();
-	pHttp->Get(nullptr);
+	httpclientUtil->DoHttp(nullptr);
 	if (PathFileExists(L"D:/httpsave.jpg"))
 	{
 		MessageBox(L"file dowload success!");
