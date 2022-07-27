@@ -15,7 +15,10 @@ HttpClientUtils::HttpClientUtils(UtilsType type, string url, JsonCoversion* tran
 	pHttpClient = nullptr;
 }
 HttpClientUtils::~HttpClientUtils() {
-
+	if (nullptr != pHttpClient)
+	{
+		delete pHttpClient;
+	}
 }
 void HttpClientUtils::Init() {
 	if (nullptr == pHttpClient)
